@@ -1,0 +1,7 @@
+version: "2"
+domain: akishitara.cronjob-operator
+repo: github.com/akishitara/cronjob-operator
+resources:
+- group: akishitara
+  version: v1
+  kind: CronjobOpe
