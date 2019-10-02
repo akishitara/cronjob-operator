@@ -42,23 +42,27 @@ type CronjobOpeReconciler struct {
 // Reconcile aaa
 func (r *CronjobOpeReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 
-	var err error
 	ctx := context.Background()
 	log := r.Log.WithValues("cronjobope", req.NamespacedName)
 
-	// your logic here
-	debugger.YamlPrint(MakeCronjobSample())
-	cronjob := MakeCronjobSample()
+	var err error
+	var cronjob akishitarav1.CronjobOpeList
 
-	err = r.Get(ctx, req.NamespacedName, &cronjob)
+	// your logic here
+	err = r.List(ctx, &cronjob)
 	if err != nil {
-		log.Info("Does Exist", "cronjob", cronjob)
+		log.Info("OK")
 		return ctrl.Result{}, nil
 	}
 
-	err = r.Client.Create(ctx, &cronjob)
+	debugger.YamlPrint(cronjob)
+
+	sampleData := MakeCronjobSample()
+
+	err = r.Client.Create(ctx, &sampleData)
 	if err != nil {
-		log.Error(err, "Error des", "cronjob", cronjob)
+		log.Info("Create Fail")
+		return ctrl.Result{}, nil
 	}
 
 	return ctrl.Result{}, nil

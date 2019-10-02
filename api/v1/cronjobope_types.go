@@ -28,6 +28,7 @@ type CronjobOpeSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Schedule Cron format
+	param1 []string
 
 	//	CronjobTemplate batchv1beta.CronJobSpec
 	//	CronjobTasks    []CronjobTask

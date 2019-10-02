@@ -8,3 +8,4 @@ spec:
   param1:
     - aaa
     - bbb
+    - ccc

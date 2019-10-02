@@ -9,7 +9,7 @@ import (
 
 // MakeCronjobSample aaa
 func MakeCronjobSample() batchv1beta1.CronJob { //*v1beta1.CronJob {
-	res := batchv1beta1.CronJob{
+	return batchv1beta1.CronJob{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "CronJob",
 			APIVersion: "batch/v1beta1",
@@ -25,7 +25,6 @@ func MakeCronjobSample() batchv1beta1.CronJob { //*v1beta1.CronJob {
 			},
 		},
 	}
-	return res
 }
 
 // MakeJobSpec aaa
