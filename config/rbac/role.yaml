@@ -44,3 +44,21 @@ rules:
   - cronjob/status
   verbs:
   - get
+- apiGroups:
+  - batch
+  resources:
+  - job
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - batch
+  resources:
+  - job/status
+  verbs:
+  - get

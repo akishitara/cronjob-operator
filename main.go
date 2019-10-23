@@ -22,6 +22,7 @@ import (
 	akishitarav1 "github.com/akishitara/cronjob-operator/api/v1"
 
 	"github.com/akishitara/cronjob-operator/controllers"
+	webui "github.com/akishitara/cronjob-operator/pkg/webui"
 
 	batchv1beta1 "k8s.io/api/batch/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -54,6 +55,9 @@ func main() {
 
 	ctrl.SetLogger(zap.Logger(true))
 
+	go func() {
+		webui.Run()
+	}()
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:             scheme,
 		MetricsBindAddress: metricsAddr,

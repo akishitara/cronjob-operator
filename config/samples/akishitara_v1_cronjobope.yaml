@@ -4,7 +4,21 @@ metadata:
   name: cronjobope-sample
 spec:
   # Add fields here
-  foo: bar
+  image: ubuntu
+  restartPolicy: "Never"
+  successfullJobHistoryLimit: 5
+  failedJobsHistoryLimit: 5
+  concurrencyPolicy: "Allow"
+  parallelism: 1
+  completions: 1
+  backoffLimit: 1
   param1:
-    - aaa
-    - bbb
+    - name: batch1
+      schedule: "*/1 * * * *"
+      cmd: ["sleep", "100"]
+    - name: batch2
+      schedule: "*/1 * * * *"
+      cmd: ["sleep", "600"]
+    - name: batch3
+      schedule: "*/1 * * * *"
+      cmd: ["sleep", "400"]

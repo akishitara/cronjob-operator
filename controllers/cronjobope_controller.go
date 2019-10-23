@@ -22,8 +22,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/akishitara/cronjob-monitor/pkg/debugger"
 	akishitarav1 "github.com/akishitara/cronjob-operator/api/v1"
+	"github.com/akishitara/cronjob-operator/pkg/debugger"
 )
 
 // CronjobOpeReconciler reconciles a CronjobOpe object
@@ -57,12 +57,49 @@ func (r *CronjobOpeReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) 
 
 	debugger.YamlPrint(cronjob)
 
-	sampleData := MakeCronjobSample()
+	for _, item := range cronjob.Items {
+		var image string
+		var restartPolicy string
+		var successfullJobHistoryLimit *int32
+		var failedJobHistoryLimit *int32
+		var concurrencyPolicy string
+		var parallelism *int32
+		var completions *int32
+		var backoffLimit *int32
 
-	err = r.Client.Create(ctx, &sampleData)
-	if err != nil {
-		log.Info("Create Fail")
-		return ctrl.Result{}, nil
+		image = item.Spec.Image
+		restartPolicy = item.Spec.RestartPolicy
+		successfullJobHistoryLimit = item.Spec.SuccessfulJobsHistoryLimit
+		failedJobHistoryLimit = item.Spec.FailedJobsHistoryLimit
+		concurrencyPolicy = item.Spec.ConcurrencyPolicy
+		parallelism = item.Spec.Parallelism
+		completions = item.Spec.Completions
+		backoffLimit = item.Spec.BackoffLimit
+
+		for _, param := range item.Spec.Param1 {
+			option := akishitarav1.CronOption{
+				JobOption: akishitarav1.JobOption{
+					Name:     param.Name,
+					Schedule: param.Schedule,
+					Cmd:      param.Cmd,
+				},
+				Image:                      image,
+				RestartPolicy:              restartPolicy,
+				SuccessfulJobsHistoryLimit: successfullJobHistoryLimit,
+				FailedJobsHistoryLimit:     failedJobHistoryLimit,
+				ConcurrencyPolicy:          concurrencyPolicy,
+				Parallelism:                parallelism,
+				Completions:                completions,
+				BackoffLimit:               backoffLimit,
+			}
+
+			sampleData := MakeCronjobSample(option)
+			debugger.YamlPrint(sampleData)
+			err = r.Client.Create(ctx, &sampleData)
+			if err != nil {
+				log.Info("Create Fail")
+			}
+		}
 	}
 
 	return ctrl.Result{}, nil

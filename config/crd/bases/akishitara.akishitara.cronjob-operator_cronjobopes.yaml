@@ -384,6 +384,56 @@ spec:
               type: string
           type: object
         spec:
+          properties:
+            backoffLimit:
+              format: int32
+              type: integer
+            completions:
+              format: int32
+              type: integer
+            concurrencyPolicy:
+              type: string
+            failedJobsHistoryLimit:
+              format: int32
+              type: integer
+            image:
+              type: string
+            parallelism:
+              format: int32
+              type: integer
+            param1:
+              description: Schedule Cron format
+              items:
+                properties:
+                  cmd:
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    type: string
+                  schedule:
+                    type: string
+                required:
+                - name
+                - schedule
+                - cmd
+                type: object
+              type: array
+            restartPolicy:
+              type: string
+            successfullJobHistoryLimit:
+              format: int32
+              type: integer
+          required:
+          - param1
+          - image
+          - restartPolicy
+          - successfullJobHistoryLimit
+          - failedJobsHistoryLimit
+          - concurrencyPolicy
+          - parallelism
+          - completions
+          - backoffLimit
           type: object
         status:
           type: object

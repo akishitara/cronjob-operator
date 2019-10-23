@@ -22,22 +22,42 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+// JobOption
+type JobOption struct {
+	Name     string   `json:"name"`
+	Schedule string   `json:"schedule"`
+	Cmd      []string `json:"cmd"`
+}
+
+// CronExec Option
+type CronOption struct {
+	JobOption                  JobOption `json:"jobOption"`
+	Image                      string    `json:"image"`
+	RestartPolicy              string    `json:"restartPolicy"`
+	SuccessfulJobsHistoryLimit *int32    `json:"successfullJobHistoryLimit"`
+	FailedJobsHistoryLimit     *int32    `json:"failedJobsHistoryLimit"`
+	ConcurrencyPolicy          string    `json:"concurrencyPolicy"`
+	Parallelism                *int32    `json:"parallelism"`
+	Completions                *int32    `json:"completions"`
+	BackoffLimit               *int32    `json:"backoffLimit"`
+}
+
 // CronjobOpeSpec defines the desired state of CronjobOpe
 type CronjobOpeSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Schedule Cron format
-	param1 []string
-
-	//	CronjobTemplate batchv1beta.CronJobSpec
-	//	CronjobTasks    []CronjobTask
+	Param1                     []JobOption `json:"param1"`
+	Image                      string      `json:"image"`
+	RestartPolicy              string      `json:"restartPolicy"`
+	SuccessfulJobsHistoryLimit *int32      `json:"successfullJobHistoryLimit"`
+	FailedJobsHistoryLimit     *int32      `json:"failedJobsHistoryLimit"`
+	ConcurrencyPolicy          string      `json:"concurrencyPolicy"`
+	Parallelism                *int32      `json:"parallelism"`
+	Completions                *int32      `json:"completions"`
+	BackoffLimit               *int32      `json:"backoffLimit"`
 }
-
-//type CronjobTask struct {
-//	Schedule string   `json:"schedule"`
-//	Cmd      []string `json:"cmd"`
-//}
 
 // CronjobOpeStatus defines the observed state of CronjobOpe
 type CronjobOpeStatus struct {
