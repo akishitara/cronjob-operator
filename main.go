@@ -58,6 +58,7 @@ func main() {
 	go func() {
 		webui.Run()
 	}()
+
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:             scheme,
 		MetricsBindAddress: metricsAddr,

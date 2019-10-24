@@ -1,6 +1,7 @@
 package webui
 
 import (
+	"errors"
 	"net/http"
 
 	k8scli "github.com/akishitara/cronjob-operator/pkg/client"
@@ -8,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Run() {
+func Run() error {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*.tmpl")
 	router.Static("/static", "static")
@@ -49,4 +50,5 @@ func Run() {
 		k8scli.TriggerCronJob(name)
 	})
 	router.Run(":80")
+	return errors.New("fail webui")
 }
