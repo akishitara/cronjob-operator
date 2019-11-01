@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"regexp"
+	"strings"
 
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -94,4 +95,20 @@ func stringToArray(data string) []string {
 		res = append(res, v)
 	}
 	return res
+}
+
+func PodLogsErrorCount(name string, errorString []string) int {
+	logs := PodLogs(name)
+	return countErrorString(logs, errorString)
+}
+
+func countErrorString(logs []string, errorStrings []string) int {
+	var count int
+	count = 0
+	for _, log := range logs {
+		for _, errorString := range errorStrings {
+			count = count + strings.Count(strings.ToLower(log), strings.ToLower(errorString))
+		}
+	}
+	return count
 }

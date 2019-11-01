@@ -104,3 +104,11 @@ func TriggerCronJob(name string) error {
 
 	return nil
 }
+
+func LastJobErrorLogCount(cronjob ActiveCronjob, errorStrings []string) int {
+	if len(cronjob.lastJobs().PodsNames) > 0 {
+		pod := cronjob.lastJobs().PodsNames[0]
+		return PodLogsErrorCount(pod, errorStrings)
+	}
+	return 0
+}

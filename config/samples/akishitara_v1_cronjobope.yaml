@@ -15,10 +15,13 @@ spec:
   param1:
     - name: batch1
       schedule: "*/1 * * * *"
-      cmd: ["sh", "-c", "date ; echo batch1 ; sleep 100"]
+      cmd: ["sh", "-c", "date ; echo batch1 ; sleep 10"]
     - name: batch2
       schedule: "*/1 * * * *"
-      cmd: ["sh", "-c", "date ; echo batch2 ; sleep 500"]
+      cmd: ["sh", "-c", "date ; echo batch2 ; sleep 100"]
     - name: batch3
       schedule: "*/1 * * * *"
-      cmd: ["sh", "-c", "date ; echo batch3 ; sleep 300"]
+      cmd: ["sh", "-c", "date ; echo batch3 ; sleep 50"]
+    - name: errorbatch
+      schedule: "*/2 * * * *"
+      cmd: ["sh", "-c", "date ; echo errordesu; echo exception.aaa  ; sleep 30"]

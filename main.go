@@ -17,11 +17,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	akishitarav1 "github.com/akishitara/cronjob-operator/api/v1"
 
 	"github.com/akishitara/cronjob-operator/controllers"
+	prometheus "github.com/akishitara/cronjob-operator/pkg/prometheus"
 	webui "github.com/akishitara/cronjob-operator/pkg/webui"
 
 	batchv1beta1 "k8s.io/api/batch/v1beta1"
@@ -55,8 +57,28 @@ func main() {
 
 	ctrl.SetLogger(zap.Logger(true))
 
+	// webui thread
 	go func() {
-		webui.Run()
+		webuiErrCh := make(chan error)
+		for {
+			go func() {
+				webuiErrCh <- webui.Run()
+			}()
+			err := <-webuiErrCh
+			fmt.Println(err)
+		}
+	}()
+
+	// prometheus thread
+	go func() {
+		prometheusErrCh := make(chan error)
+		for {
+			go func() {
+				prometheusErrCh <- prometheus.Run()
+			}()
+			err := <-prometheusErrCh
+			fmt.Println(err)
+		}
 	}()
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
