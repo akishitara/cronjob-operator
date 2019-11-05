@@ -93,7 +93,7 @@ func (r *CronjobOpeReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) 
 				BackoffLimit:               backoffLimit,
 			}
 
-			sampleData := MakeCronjobSample(option)
+			sampleData := MakeCronjobSample(item, option)
 			debugger.YamlPrint(sampleData)
 			err = r.Client.Create(ctx, &sampleData)
 			if err != nil {

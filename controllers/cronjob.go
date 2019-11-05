@@ -9,15 +9,25 @@ import (
 )
 
 // MakeCronjobSample aaa
-func MakeCronjobSample(option akishitarav1.CronOption) batchv1beta1.CronJob { //*v1beta1.CronJob {
+func MakeCronjobSample(cronJobOpe akishitarav1.CronjobOpe, option akishitarav1.CronOption) batchv1beta1.CronJob { //*v1beta1.CronJob {
+
+	var a = []metav1.OwnerReference{
+		metav1.OwnerReference{
+			Name:       cronJobOpe.Name,
+			APIVersion: cronJobOpe.TypeMeta.APIVersion,
+			Kind:       cronJobOpe.TypeMeta.Kind,
+			UID:        cronJobOpe.UID,
+		},
+	}
 	return batchv1beta1.CronJob{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "CronJob",
 			APIVersion: "batch/v1beta1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      option.JobOption.Name,
-			Namespace: corev1.NamespaceDefault,
+			Name:            option.JobOption.Name,
+			Namespace:       corev1.NamespaceDefault,
+			OwnerReferences: a,
 		},
 		Spec: batchv1beta1.CronJobSpec{
 			Schedule: option.JobOption.Schedule,
