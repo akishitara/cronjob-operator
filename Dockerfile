@@ -23,4 +23,3 @@ FROM gcr.io/distroless/static:latest
 WORKDIR /
 COPY --from=builder /workspace/manager .
 ENTRYPOINT ["/manager"]
-
